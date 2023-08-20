@@ -12,8 +12,7 @@ message RegisterRequest {
     bytes y2 = 3;
 }
 
-message RegisterResponse {
-}
+message RegisterResponse {}
 
 /*
  * Prover ask for challenge in the server sending
@@ -36,17 +35,17 @@ message AuthenticationChallengeResponse {
  * Prover sends solution "s = k - c * x mod q" to the challenge
  * Verifier sends the session ID if the solution is correct
  */ 
-message AutheticationAnswerRequest {
+message AuthenticationAnswerRequest {
     string auth_id = 1;
     bytes s = 2;
 }
 
-message AutheticationAnswerResponse {
+message AuthenticationAnswerResponse {
     string session_id = 1;
 }
 
 service Auth {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc CreateAuthenticationChallenge(AuthenticationChallengeRequest) returns (AuthenticationChallengeResponse) {}
-    rpc VerifyAuthentication(AutheticationAnswerRequest) returns (AutheticationAnswerResponse) {}
+    rpc VerifyAuthentication(AuthenticationAnswerRequest) returns (AuthenticationAnswerResponse) {}
 }

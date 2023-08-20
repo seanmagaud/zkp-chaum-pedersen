@@ -43,7 +43,7 @@ pub struct AuthenticationChallengeResponse {
 /// Verifier sends the session ID if the solution is correct
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AutheticationAnswerRequest {
+pub struct AuthenticationAnswerRequest {
     #[prost(string, tag = "1")]
     pub auth_id: ::prost::alloc::string::String,
     #[prost(bytes = "vec", tag = "2")]
@@ -51,7 +51,7 @@ pub struct AutheticationAnswerRequest {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AutheticationAnswerResponse {
+pub struct AuthenticationAnswerResponse {
     #[prost(string, tag = "1")]
     pub session_id: ::prost::alloc::string::String,
 }
@@ -191,9 +191,9 @@ pub mod auth_client {
         }
         pub async fn verify_authentication(
             &mut self,
-            request: impl tonic::IntoRequest<super::AutheticationAnswerRequest>,
+            request: impl tonic::IntoRequest<super::AuthenticationAnswerRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::AutheticationAnswerResponse>,
+            tonic::Response<super::AuthenticationAnswerResponse>,
             tonic::Status,
         > {
             self.inner
@@ -239,9 +239,9 @@ pub mod auth_server {
         >;
         async fn verify_authentication(
             &self,
-            request: tonic::Request<super::AutheticationAnswerRequest>,
+            request: tonic::Request<super::AuthenticationAnswerRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::AutheticationAnswerResponse>,
+            tonic::Response<super::AuthenticationAnswerResponse>,
             tonic::Status,
         >;
     }
@@ -419,16 +419,16 @@ pub mod auth_server {
                     struct VerifyAuthenticationSvc<T: Auth>(pub Arc<T>);
                     impl<
                         T: Auth,
-                    > tonic::server::UnaryService<super::AutheticationAnswerRequest>
+                    > tonic::server::UnaryService<super::AuthenticationAnswerRequest>
                     for VerifyAuthenticationSvc<T> {
-                        type Response = super::AutheticationAnswerResponse;
+                        type Response = super::AuthenticationAnswerResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::AutheticationAnswerRequest>,
+                            request: tonic::Request<super::AuthenticationAnswerRequest>,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {

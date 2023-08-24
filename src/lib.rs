@@ -1,10 +1,11 @@
 use num_bigint::{BigUint, RandBigInt};
+use rand::Rng;
 
 pub struct ZKP {
-    p: BigUint,
-    q: BigUint,
-    alpha: BigUint,
-    beta: BigUint,
+    pub q: BigUint,
+    pub p: BigUint,
+    pub alpha: BigUint,
+    pub beta: BigUint,
 }
 
 impl ZKP {
@@ -37,6 +38,14 @@ impl ZKP {
 
         // the random generator number should be below the parameter (in test eg: q) because it must be a number in the range of the group
         rng.gen_biguint_below(bound)
+    }
+
+    pub fn generate_random_string(size: usize) -> String {
+        rand::thread_rng()
+            .sample_iter(rand::distributions::Alphanumeric)
+            .take(size)
+            .map(char::from)
+            .collect()
     }
 
     pub fn get_constants() -> (BigUint, BigUint, BigUint, BigUint) {

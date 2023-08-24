@@ -1,1 +1,1 @@
-# zkp-chaum-pederson
+# zkp-chaum-pedersen

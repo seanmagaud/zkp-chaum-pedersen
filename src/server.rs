@@ -26,9 +26,7 @@ struct UserInfo {
     pub r1: BigUint,
     pub r2: BigUint,
     //verification
-    pub c: BigUint,
-    pub s: BigUint,
-    pub session_id: String,
+    pub c: BigUint
 }
 
 #[tonic::async_trait]
@@ -45,7 +43,7 @@ impl Auth for AuthImpl {
         user_info.y1 = BigUint::from_bytes_be(&request.y1);
         user_info.y2 = BigUint::from_bytes_be(&request.y2);
 
-        let mut user_info_hashmap = &mut self.user_info.lock().unwrap(); // lock the mutex to let no one read it
+        let user_info_hashmap = &mut self.user_info.lock().unwrap(); // lock the mutex to let no one read it
         user_info_hashmap.insert(user_name, user_info);
 
 
@@ -59,7 +57,7 @@ impl Auth for AuthImpl {
 
         let user_name = request.user;
 
-        let mut user_info_hashmap = &mut self.user_info.lock().unwrap();
+        let user_info_hashmap = &mut self.user_info.lock().unwrap();
 
         if let Some(user_info) = user_info_hashmap.get_mut(&user_name) {
             user_info.r1 = BigUint::from_bytes_be(&request.r1);
@@ -70,8 +68,10 @@ impl Auth for AuthImpl {
             let auth_id = ZKP::generate_random_string(12);
 
             user_info.c = c.clone();
+            user_info.r1 = BigUint::from_bytes_be(&request.r1);
+            user_info.r2 = BigUint::from_bytes_be(&request.r2);
             
-            let mut auth_id_to_user = &mut self.auth_id_to_user.lock().unwrap();
+            let auth_id_to_user = &mut self.auth_id_to_user.lock().unwrap();
             auth_id_to_user.insert(auth_id.clone(), user_name.clone());
 
             Ok(Response::new(AuthenticationChallengeResponse {auth_id, c: c.to_bytes_be()}))
@@ -88,10 +88,10 @@ impl Auth for AuthImpl {
 
         let auth_id = request.auth_id;
 
-        let mut auth_id_to_user_hashmap = &mut self.auth_id_to_user.lock().unwrap();
+        let auth_id_to_user_hashmap = &mut self.auth_id_to_user.lock().unwrap();
 
         if let Some(user_name) = auth_id_to_user_hashmap.get(&auth_id) {
-            let mut user_info_hashmap = &mut self.user_info.lock().unwrap();
+            let user_info_hashmap = &mut self.user_info.lock().unwrap();
             let user_info = user_info_hashmap.get_mut(user_name).expect("AuthId not found on hashmap");
 
             let s = BigUint::from_bytes_be(&request.s);

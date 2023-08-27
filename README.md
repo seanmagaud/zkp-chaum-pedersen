@@ -1,6 +1,11 @@
 # Zero-Knowledge Proof Authentication System
 
-This project implements a zero-knowledge proof authentication system using the Chaum-Pedersen protocol. It allows users to register, authenticate, and verify their identity without revealing their actual credentials.
+This project implements a zero-knowledge proof authentication system using the Chaum-Pedersen protocol. 
+
+It allows users to register, authenticate, and verify their identity without revealing their actual credentials.
+
+![pedersen](https://github.com/seanmagaud/zkp-chaum-pedersen/assets/90192506/98ad1f7e-337b-47d7-be15-218dcf096932)
+
 
 ## Prerequisites
 
